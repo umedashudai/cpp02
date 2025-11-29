@@ -158,7 +158,7 @@ float	Fixed::toFloat(void) const {
 
 int		Fixed::toInt(void) const {
 
-    return this->_value >> this->_frac_bits;
+    return static_cast<int>(this->toFloat());
 }
 
 std::ostream	&operator<<(std::ostream &str, const Fixed &fixed_nbr)
