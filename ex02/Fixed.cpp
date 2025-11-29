@@ -3,155 +3,142 @@
 /*                                                        :::      ::::::::   */
 /*   Fixed.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sumedai <sumedai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shuu <shuu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/22 12:31:03 by shuu              #+#    #+#             */
-/*   Updated: 2025/11/23 15:21:35 by sumedai          ###   ########.fr       */
+/*   Created: 2025/11/26 11:08:29 by shuu              #+#    #+#             */
+/*   Updated: 2025/11/28 14:14:34 by shuu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 
-const int Fixed::_bits = 8;
+const int Fixed::_frac_bits = 8;
 
-Fixed::Fixed(void): _value(0) {
+Fixed::Fixed(void): _value(0) {}
 
-    std::cout << "Default constructor called" << std::endl;
-}
+Fixed::Fixed(const int value) : _value(value << _frac_bits) {}
 
-Fixed::Fixed(const int value) : _value(value << this->_bits) {
-
-    std::cout << "Int constructor called" << std::endl;
-}
-
-
-Fixed::Fixed(const float value) : _value(static_cast<int>(roundf(value * (1 << _bits)))) {
-
-    std::cout << "Float constructor called" << std::endl;
-}
+Fixed::Fixed(const float value) : _value(static_cast<int>(roundf(value * (1 << _frac_bits)))) {}
 
 Fixed::Fixed(const Fixed &copy) {
     
-    std::cout << "Copy constructor called" << std::endl;
-    if (*this != copy)
+    if (&copy != this)
         *this = copy;
 }
 
-Fixed::~Fixed(void) {
-
-    std::cout << "Destructor called" << std::endl;
-}
+Fixed::~Fixed(void) {}
 
 Fixed &Fixed::operator=(const Fixed &copy) {
-    
-    std::cout << "Copy assignment operator called" << std::endl;
+
     if (&copy != this)
         this->_value = copy.getRawBits();
     return *this;
 }
 
-Fixed Fixed::operator+(const Fixed &copy) {
-
+Fixed  Fixed::operator+(const Fixed &copy) const {
+    
     return Fixed(this->toFloat() + copy.toFloat());
 }
 
-Fixed Fixed::operator-(const Fixed &copy) {
+Fixed   Fixed::operator-(const Fixed &copy) const {
 
     return Fixed(this->toFloat() - copy.toFloat());
 }
 
-Fixed Fixed::operator*(const Fixed &copy) {
+Fixed	Fixed::operator*(const Fixed &copy) const {
 
     return Fixed(this->toFloat() * copy.toFloat());
 }
 
-Fixed Fixed::operator/(const Fixed &copy) {
+Fixed	Fixed::operator/(const Fixed &copy) const {
 
     return Fixed(this->toFloat() / copy.toFloat());
 }
 
-bool Fixed::operator==(const Fixed &copy) const {
+bool    Fixed::operator==(const Fixed &copy) const {
 
-    return this->toFloat() == copy.toFloat();
+    return this->toFloat() == copy.toFloat(); 
 }
 
-bool Fixed::operator!=(const Fixed &copy) const {
+bool	Fixed::operator!=(const Fixed &copy) const {
 
     return this->toFloat() != copy.toFloat();
 }
 
-bool Fixed::operator>(const Fixed &copy) const {
-
-    return this->toFloat() > copy.toFloat();
-}
-
-bool Fixed::operator<(const Fixed &copy) const {
-
-    return this->toFloat() < copy.toFloat();
-}
-
-bool Fixed::operator>=(const Fixed &copy) const {
-
-    return this->toFloat() >= copy.toFloat();
-}
-
-bool Fixed::operator<=(const Fixed &copy) const {
+bool	Fixed::operator<=(const Fixed &copy) const {
 
     return this->toFloat() <= copy.toFloat();
 }
 
-const Fixed &Fixed::min(const Fixed &f1, const Fixed &f2) {
+bool	Fixed::operator>=(const Fixed &copy) const {
 
-    if (f1 < f2)
-        return f1;
-    return f2;
+    return this->toFloat() >= copy.toFloat();
 }
 
-const Fixed &Fixed::max(const Fixed &f1, const Fixed &f2) {
+bool	Fixed::operator<(const Fixed &copy) const {
 
-    if (f1 > f2)
-        return f1;
-    return f2;
+    return this->toFloat() < copy.toFloat();
 }
 
-Fixed &Fixed::min(Fixed &f1, Fixed &f2) {
+bool	Fixed::operator>(const Fixed &copy) const {
 
-    if (f1 < f2)
-        return f1;
-    return f2;
+    return this->toFloat() > copy.toFloat();
 }
 
-Fixed &Fixed::max(Fixed &f1, Fixed &f2) {
-
-    if (f1 > f2)
-        return f1;
-    return f2;
-}
-
-Fixed& Fixed::operator++(void) {
+Fixed	&Fixed::operator++(void) {
 
     this->_value += 1;
     return *this;
 }
 
-Fixed& Fixed::operator--(void) {
+Fixed	&Fixed::operator--(void) {
 
     this->_value -= 1;
     return *this;
 }
 
-Fixed Fixed::operator++(int) {
+Fixed	Fixed::operator++(int) {
 
-    Fixed temp = *this;
-    ++*this;
-    return temp;
+    Fixed tmp = *this;
+
+    ++(*this);
+    return tmp;
 }
 
-Fixed Fixed::operator--(int) {
+Fixed	Fixed::operator--(int) {
 
-    Fixed temp = *this;
-    --*this;
-    return temp;
+    Fixed tmp = *this;
+
+    --(*this);
+    return tmp;
+}
+
+Fixed &Fixed::min(Fixed &copy1, Fixed &copy2) {
+
+	if (copy1 < copy2)
+		return copy1;
+	return copy2;
+}
+
+Fixed &Fixed::max(Fixed &copy1, Fixed &copy2) {
+
+	if (copy1 > copy2)
+		return copy1;
+	return copy2;
+}
+
+const Fixed	&Fixed::min(const Fixed &copy1, const Fixed &copy2) {
+    
+    if (copy1 < copy2)
+		return (copy1);
+	return (copy2);
+}
+
+const Fixed	&Fixed::max(const Fixed &copy1, const Fixed &copy2) {
+
+    if (copy1 > copy2)
+		return (copy1);
+	return (copy2);
 }
 
 int Fixed::getRawBits(void) const {
@@ -159,23 +146,22 @@ int Fixed::getRawBits(void) const {
     return this->_value;
 }
 
-void Fixed::setRawBits(int const raw) {
+void Fixed::setRawBits(const int raw) {
 
     this->_value = raw;
 }
 
-float Fixed::toFloat(void) const {
+float	Fixed::toFloat(void) const {
 
-    return static_cast<float>(this->_value) / static_cast<float>(1 << this->_bits);
+    return static_cast<float>(this->_value / static_cast<float>(1 << this->_frac_bits));
 }
 
-int Fixed::toInt(void) const {
+int		Fixed::toInt(void) const {
 
-    return this->_value >> this->_bits;
+    return this->_value >> this->_frac_bits;
 }
 
-std::ostream& operator<<(std::ostream& out, Fixed const& fixed) {
-
-    out << fixed.toFloat();
-    return out;
+std::ostream	&operator<<(std::ostream &str, const Fixed &fixed_nbr)
+{
+	return (str << fixed_nbr.toFloat());
 }

@@ -1,4 +1,4 @@
-NAME = fixed2
+NAME = fixed
 SRC = Fixed.cpp main.cpp
 OBJ = $(SRC:%.cpp=%.o)
 CC = c++

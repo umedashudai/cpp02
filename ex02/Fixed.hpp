@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Fixed.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sumedai <sumedai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shuu <shuu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 17:21:47 by shuu              #+#    #+#             */
-/*   Updated: 2025/11/23 15:23:08 by sumedai          ###   ########.fr       */
+/*   Updated: 2025/11/28 14:12:32 by shuu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,39 @@
 # define FIXED_HPP
 
 #include <iostream>
-#include <cmath>
 
 class Fixed {
 
     private:
         int _value;
-        static int const _bits;
+        static const int _frac_bits;
     public:
         Fixed(void);
         Fixed(const int value);
         Fixed(const float value);
         Fixed(const Fixed &copy);
         ~Fixed(void);
-        Fixed   &operator=(const Fixed  &copy);
-        Fixed operator+(const Fixed &copy);
-        Fixed operator-(const Fixed &copy);
-        Fixed operator*(const Fixed &copy);
-        Fixed operator/(const Fixed &copy);
-        bool operator==(const Fixed &copy) const;
-        bool operator!=(const Fixed &copy) const;
-        bool operator>(const Fixed &copy) const;
-        bool operator<(const Fixed &copy) const;
-        bool operator>=(const Fixed &copy) const;
-        bool operator<=(const Fixed &copy) const;
-        static const Fixed &min(const Fixed &f1, const Fixed &f2);
-        static const Fixed &max(const Fixed &f1, const Fixed &f2);
-        static Fixed &min(Fixed &f1, Fixed &f2);
-        static Fixed &max(Fixed &f1, Fixed &f2);
-        Fixed& operator++(void);
-        Fixed& operator--(void);
-        Fixed operator++(int);
-        Fixed operator--(int);
+
+        Fixed   &operator=(const Fixed &copy);
+        Fixed   operator+(const Fixed &copy) const;
+        Fixed   operator-(const Fixed &copy) const;
+        Fixed	operator*(const Fixed &copy) const;
+		Fixed	operator/(const Fixed &copy) const;
+        bool    operator==(const Fixed &copy) const;
+        bool	operator!=(const Fixed &copy) const;
+		bool	operator<=(const Fixed &copy) const;
+		bool	operator>=(const Fixed &copy) const;
+		bool	operator<(const Fixed &copy) const;
+		bool	operator>(const Fixed &copy) const;
+        Fixed	&operator++(void);
+		Fixed	&operator--(void);
+		Fixed	operator++(int value);
+		Fixed	operator--(int value);
+
+        static Fixed &min(Fixed &copy1, Fixed &copy2);
+        static Fixed &max(Fixed &copy1, Fixed &copy2);
+        static const Fixed	&min(const Fixed &copy1, const Fixed &copy2);
+		static const Fixed	&max(const Fixed &copy1, const Fixed &copy2);
         int getRawBits(void) const;
         void setRawBits(int const raw);
         float	toFloat(void) const;
